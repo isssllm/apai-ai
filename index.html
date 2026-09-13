@@ -82,38 +82,19 @@
     <div class="panel form-panel">
       <div class="form-step active" data-panel="1">
         <div class="panel-title"><span>01</span><h3 data-i18n="materialTitle">Қандай материал керек?</h3></div>
-        <div class="choice-grid" id="materialChoices">
-          <button class="choice selected" data-value="Тест"><span class="icon">☑</span><strong data-i18n="test">Тест</strong><small data-i18n="testSub">Сұрақтар мен жауаптар</small></button>
-          <button class="choice" data-value="Презентация"><span class="icon">▣</span><strong data-i18n="presentation">Презентация</strong><small data-i18n="presentationSub">Слайдтарға арналған құрылым</small></button>
-          <button class="choice" data-value="Викторина"><span class="icon">✦</span><strong data-i18n="quiz">Викторина</strong><small data-i18n="quizSub">Қызықты тапсырмалар</small></button>
-          <button class="choice" data-value="Постер"><span class="icon">▤</span><strong data-i18n="poster">Постер / плакат</strong><small data-i18n="posterSub">Көрнекі материал</small></button>
-          <button class="choice" data-value="Инфографика"><span class="icon">◫</span><strong data-i18n="infographic">Инфографика</strong><small data-i18n="infographicSub">Деректерді визуалдау</small></button>
-          <button class="choice" data-value="Карточкалар"><span class="icon">▤</span><strong data-i18n="cards">Карточкалар</strong><small data-i18n="cardsSub">Жеке / жұптық жұмыс</small></button>
-          <button class="choice" data-value="Сабақ жоспары"><span class="icon">☷</span><strong data-i18n="lessonPlan">Сабақ жоспары</strong><small data-i18n="lessonPlanSub">Толық сабақ құрылымы</small></button>
-          <button class="choice" data-value="Баннер"><span class="icon">▰</span><strong data-i18n="banner">Баннер</strong><small data-i18n="bannerSub">Қысқа хабарлама</small></button>
-        </div>
+        <div class="choice-grid" id="materialChoices"></div>
         <div class="step-actions"><button class="btn btn-primary next-btn" data-next="2" data-i18n="continue">Жалғастыру →</button></div>
       </div>
 
       <div class="form-step" data-panel="2">
-        <div class="panel-title"><span>02</span><h3 data-i18n="lessonTitle">Сабақ туралы</h3></div>
-        <div class="field-grid">
-          <label><span data-i18n="subject">Пән</span><select id="subject"><option>Математика</option><option>Қазақ тілі</option><option>Қазақ әдебиеті</option><option>Орыс тілі</option><option>Ағылшын тілі</option><option>Физика</option><option>Химия</option><option>Биология</option><option>Информатика</option><option>Тарих</option><option>География</option><option>Бастауыш сынып</option></select></label>
-          <label><span data-i18n="grade">Сынып</span><select id="grade"><option>1 сынып</option><option>2 сынып</option><option>3 сынып</option><option>4 сынып</option><option>5 сынып</option><option>6 сынып</option><option>7 сынып</option><option>8 сынып</option><option>9 сынып</option><option>10 сынып</option><option>11 сынып</option></select></label>
-          <label class="full"><span data-i18n="topic">Тақырып</span><input id="topic" placeholder="Мысалы: Квадрат теңдеулер"></label>
-        </div>
+        <div class="panel-title"><span>02</span><h3 data-i18n="lessonTitle">Негізгі мәліметтер</h3></div>
+        <div class="field-grid" id="primaryFields"></div>
         <div class="step-actions"><button class="btn btn-secondary back-btn" data-back="1" data-i18n="back">← Артқа</button><button class="btn btn-primary next-btn" data-next="3" data-i18n="continue">Жалғастыру →</button></div>
       </div>
 
       <div class="form-step" data-panel="3">
-        <div class="panel-title"><span>03</span><h3 data-i18n="settingsTitle">Баптаулар</h3></div>
-        <div class="field-grid">
-          <label><span data-i18n="difficulty">Күрделілік</span><select id="difficulty"><option>Жеңіл</option><option selected>Орташа</option><option>Күрделі</option></select></label>
-          <label><span data-i18n="promptLanguage">Промпт тілі</span><select id="promptLanguage"><option value="kk">Қазақша</option><option value="ru">Орысша</option></select></label>
-          <label><span data-i18n="quantity">Саны</span><select id="quantity"><option>5</option><option selected>10</option><option>15</option><option>20</option></select></label>
-          <label><span data-i18n="goal">Мақсат</span><select id="goal"><option>Білімді тексеру</option><option>Жаңа тақырыпты түсіндіру</option><option>Бекіту</option><option>Қайталау</option><option>Бағалау</option></select></label>
-          <label class="full"><span data-i18n="extra">Қосымша талаптар</span><textarea id="extra" rows="4" placeholder="Мысалы: деңгейлік тапсырмалар, дұрыс жауаптар соңында, заманауи мысалдар..."></textarea></label>
-        </div>
+        <div class="panel-title"><span>03</span><h3 data-i18n="settingsTitle">Қосымша баптаулар</h3></div>
+        <div class="field-grid" id="settingsFields"></div>
         <div class="step-actions"><button class="btn btn-secondary back-btn" data-back="2" data-i18n="back">← Артқа</button><button class="btn btn-primary generate-btn" data-i18n="generate" type="button">Промпт жасау ✦</button>
           <div class="access-note" id="accessNote"></div></div>
       </div>
@@ -192,15 +173,41 @@
       <button class="btn btn-secondary" id="logoutBtn" data-i18n="logout">Шығу</button>
       <button class="btn btn-primary" id="adminPanelBtn" data-i18n="adminPanel" hidden>Админ панелі</button>
     </div>
-    <div class="admin-panel" id="adminPanel" hidden>
-      <div class="admin-head"><strong data-i18n="adminUsers">Қолданушылар</strong><button class="btn btn-secondary" id="refreshUsers">↻</button></div>
-      <div id="userList" class="user-list"></div>
-    </div>
+
   </div>
 </div>
 
+<div class="modal-backdrop" id="previewModal" aria-hidden="true">
+  <div class="preview-modal" role="dialog" aria-modal="true">
+    <button class="modal-close" id="previewClose" aria-label="Close">×</button>
+    <div class="auth-kicker">ApaI Preview</div>
+    <h3 id="previewTitle">Үлгі</h3>
+    <p class="preview-note" id="previewNote"></p>
+    <div id="previewCanvas" class="preview-canvas"></div>
+  </div>
+</div>
+
+<section class="admin-page" id="adminPage" hidden>
+  <div class="admin-page-shell">
+    <div class="admin-page-head">
+      <div><div class="section-kicker">ADMIN</div><h2 data-i18n="adminTitle">Админ панелі</h2><p data-i18n="adminSubtitle">Қолданушыларды іздеу, сүзу және қолжетімділігін басқару.</p></div>
+      <div class="admin-head-actions"><button class="btn btn-secondary" id="refreshUsers">↻</button><button class="btn btn-primary" id="adminCloseBtn" data-i18n="close">Жабу</button></div>
+    </div>
+    <div class="admin-stats" id="adminStats"></div>
+    <div class="admin-toolbar">
+      <input id="adminSearch" type="search" data-i18n-placeholder="searchUsers" placeholder="Аты немесе email бойынша іздеу">
+      <select id="adminStatusFilter"><option value="all">Барлық статус</option><option value="pending">pending</option><option value="approved">approved</option><option value="rejected">rejected</option><option value="blocked">blocked</option></select>
+      <select id="adminPlanFilter"><option value="all">Барлық тариф</option><option value="free">free</option><option value="paid">paid</option><option value="admin">admin</option></select>
+    </div>
+    <div class="admin-table-head"><span>Қолданушы</span><span>Тариф</span><span>Статус</span><span>Қалған уақыт</span><span>Тіркелді</span><span>Әрекеттер</span></div>
+    <div id="adminUserList" class="admin-user-list"></div>
+    <div class="admin-pagination"><button class="btn btn-secondary" id="adminPrev" data-i18n="prev">← Алдыңғы</button><span id="adminPageInfo">1 / 1</span><button class="btn btn-secondary" id="adminNext" data-i18n="next">Келесі →</button></div>
+  </div>
+</section>
+
 <footer class="footer"><span>© 2026 ApaI</span><span data-i18n="footerText">Мұғалімдерге арналған ақылды көмекші.</span></footer>
 
+<script src="prompt-templates.js"></script>
 <script src="app.js"></script>
 </body>
 </html>

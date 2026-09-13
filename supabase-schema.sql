@@ -133,28 +133,148 @@ $$;
 revoke all on function public.admin_set_user_access(uuid,text,text,timestamptz) from public;
 grant execute on function public.admin_set_user_access(uuid,text,text,timestamptz) to authenticated;
 
--- Helpful view/function for the client: paid + approved = generator access.
-create or replace function public.can_generate()
-returns boolean
-language sql
+-- ------------------------------------------------------------
+-- ONE-MONTH SUBSCRIPTION ACCESS
+-- ------------------------------------------------------------
+
+-- Admin: add exactly one calendar month. If the user still has active
+-- time, the new month is added after the current paid_until date.
+-- If access has already expired (or no expiry exists), it starts from now().
+create or replace function public.admin_add_one_month(target_user_id uuid)
+returns public.profiles
+language plpgsql
 security definer
 set search_path = public
-stable
 as $$
-  select exists (
+declare result public.profiles;
+begin
+  if not public.is_admin() then
+    raise exception 'Not authorized';
+  end if;
+
+  update public.profiles
+  set access_status = 'approved',
+      plan = 'paid',
+      paid_until = (
+        case
+          when paid_until is not null and paid_until > now() then paid_until
+          else now()
+        end
+      ) + interval '1 month'
+  where id = target_user_id
+    and plan <> 'admin'
+  returning * into result;
+
+  if result.id is null then
+    raise exception 'User profile not found or target is admin';
+  end if;
+
+  return result;
+end;
+$$;
+
+revoke all on function public.admin_add_one_month(uuid) from public;
+grant execute on function public.admin_add_one_month(uuid) to authenticated;
+
+-- Admin: block a user immediately. The paid_until value is preserved so
+-- the admin can still see the subscription history / remaining time.
+create or replace function public.admin_block_user(target_user_id uuid)
+returns public.profiles
+language plpgsql
+security definer
+set search_path = public
+as $$
+declare result public.profiles;
+begin
+  if not public.is_admin() then
+    raise exception 'Not authorized';
+  end if;
+
+  update public.profiles
+  set access_status = 'blocked'
+  where id = target_user_id
+    and plan <> 'admin'
+  returning * into result;
+
+  if result.id is null then
+    raise exception 'User profile not found or target is admin';
+  end if;
+
+  return result;
+end;
+$$;
+
+revoke all on function public.admin_block_user(uuid) from public;
+grant execute on function public.admin_block_user(uuid) to authenticated;
+
+-- Admin dashboard helper: mark every expired paid account as blocked.
+create or replace function public.admin_expire_paid_users()
+returns integer
+language plpgsql
+security definer
+set search_path = public
+as $$
+declare affected integer;
+begin
+  if not public.is_admin() then
+    raise exception 'Not authorized';
+  end if;
+
+  update public.profiles
+  set access_status = 'blocked'
+  where plan = 'paid'
+    and (paid_until is null or paid_until <= now())
+    and access_status <> 'blocked';
+
+  get diagnostics affected = row_count;
+  return affected;
+end;
+$$;
+
+revoke all on function public.admin_expire_paid_users() from public;
+grant execute on function public.admin_expire_paid_users() to authenticated;
+
+-- Client access check. On every login/page load this also automatically
+-- moves the current user's expired paid subscription to blocked status.
+create or replace function public.can_generate()
+returns boolean
+language plpgsql
+security definer
+set search_path = public
+as $$
+begin
+  update public.profiles
+  set access_status = 'blocked'
+  where id = auth.uid()
+    and plan = 'paid'
+    and (paid_until is null or paid_until <= now())
+    and access_status <> 'blocked';
+
+  return exists (
     select 1
     from public.profiles
     where id = auth.uid()
       and access_status = 'approved'
       and (
         plan = 'admin'
-        or (plan = 'paid' and (paid_until is null or paid_until > now()))
+        or (plan = 'paid' and paid_until > now())
       )
   );
+end;
 $$;
 
 revoke all on function public.can_generate() from public;
 grant execute on function public.can_generate() to authenticated;
+
+-- ------------------------------------------------------------
+-- OPTIONAL: EXACT-TIME AUTOMATIC EXPIRY WITH pg_cron
+-- ------------------------------------------------------------
+-- The website already blocks an expired user automatically on their next
+-- page load/login, and the admin dashboard expires all overdue users when
+-- it is opened/refreshed. If you want the database status to flip even when
+-- nobody opens the site, enable the pg_cron extension in Supabase and add a
+-- scheduled job that runs an admin/service-side expiry function.
+-- ------------------------------------------------------------
 
 -- ------------------------------------------------------------
 -- ONE-TIME ADMIN SETUP
