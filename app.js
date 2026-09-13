@@ -135,18 +135,29 @@ $('.generate-btn').addEventListener('click',async()=>{
 $('#copyBtn').addEventListener('click',async()=>{if(!accessAllowed())return guardGenerator();await navigator.clipboard.writeText(state.prompt);$('#copyBtn').textContent=state.language==='kk'?'✓ Көшірілді':'✓ Скопировано';setTimeout(()=>$('#copyBtn').textContent=t('copyPrompt'),1600);});
 
 const previewDefinitions={
- test:{title:'Тест',kind:'paper',tag:'8 сынып • Биология',headline:'Қанның құрамы',blocks:['5 тест сұрағы','Деңгейлік тапсырмалар','Сәйкестендіру','Бонус тапсырма']},
+ test:{title:'Тест',kind:'paper',tag:'8 сынып • Биология',headline:'Қанның құрамы',blocks:['5 тест сұрағы','Деңгейлік тапсырмалар','Сәйкестендіру','Бонус тапсырма'],image:'/assets/previews/test.jpeg'},
  bjb:{title:'БЖБ',kind:'paper',tag:'8 сынып • 2 тоқсан',headline:'Бөлім бойынша жиынтық бағалау',blocks:['Оқу мақсаттары','4–6 тапсырма','Жалпы балл','Жауап кілті']},
  tjb:{title:'ТЖБ',kind:'paper',tag:'9 сынып • 1 тоқсан',headline:'Тоқсан бойынша жиынтық бағалау',blocks:['Спецификация','Бөлімдер бойынша тапсырмалар','Балл қою кестесі','Дескрипторлар']},
  presentation:{title:'Презентация',kind:'slides',tag:'10 сынып • Информатика',headline:'Жасанды интеллект',blocks:['Оқу мақсаты','Жаңа тақырып','Практика','Рефлексия']},
- worksheet:{title:'Жұмыс парағы',kind:'worksheet',tag:'7 сынып • Информатика',headline:'Компьютерлік желілер',blocks:['Ассоциация','Суретпен жұмыс','Сәйкестендіру','Ойын элементі']},
- poster:{title:'Постер',kind:'poster',tag:'8 сынып • Биология',headline:'Қанның құрамы',blocks:['Бұл не?','Неліктен маңызды?','Білесің бе?','Есте сақта!']},
- infographic:{title:'Инфографика',kind:'infographic',tag:'7 сынып • География',headline:'Су айналымы',blocks:['Негізгі визуал','4–6 блок','Кезеңдік схема','Есте сақта!']},
- cards:{title:'Карточкалар',kind:'cards',tag:'6 сынып • Математика',headline:'Қатынас және пропорция',blocks:['№1','№2','№3','№4','№5','№6']},
+ worksheet:{title:'Жұмыс парағы',kind:'worksheet',tag:'7 сынып • Информатика',headline:'Компьютерлік желілер',blocks:['Ассоциация','Суретпен жұмыс','Сәйкестендіру','Ойын элементі'],image:'/assets/previews/worksheet.jpeg'},
+ poster:{title:'Постер',kind:'poster',tag:'8 сынып • Биология',headline:'Қанның құрамы',blocks:['Бұл не?','Неліктен маңызды?','Білесің бе?','Есте сақта!'],image:'/assets/previews/poster.jpeg'},
+ infographic:{title:'Инфографика',kind:'infographic',tag:'7 сынып • География',headline:'Су айналымы',blocks:['Негізгі визуал','4–6 блок','Кезеңдік схема','Есте сақта!'],image:'/assets/previews/infographic.jpeg'},
+ cards:{title:'Карточкалар',kind:'cards',tag:'6 сынып • Математика',headline:'Қатынас және пропорция',blocks:['№1','№2','№3','№4','№5','№6'],image:'/assets/previews/cards.jpeg'},
  lessonPlan:{title:'Сабақ жоспары',kind:'plan',tag:'7 сынып • Информатика',headline:'Қысқа мерзімді жоспар',blocks:['Сабақтың басы','Сабақтың ортасы','Бағалау','Рефлексия']},
  banner:{title:'Баннер',kind:'banner',tag:'Онлайн практикум',headline:'ЖИ-ПРАКТИКУМ',blocks:['05.09.2026','19:00','2 000 ₸','ТІРКЕЛУ']}
 };
-function showPreview(key){const p=previewDefinitions[key];if(!p)return;$('#previewTitle').textContent=p.title;$('#previewNote').textContent=t('exampleNote');$('#previewCanvas').innerHTML=`<div class="sample ${p.kind}"><div class="sample-top"><span>${escapeHtml(p.tag)}</span><b>${MATERIAL_CONFIG[key].icon}</b></div><h4>${escapeHtml(p.headline)}</h4><div class="sample-blocks">${p.blocks.map((x,i)=>`<div class="sample-block"><i>${String(i+1).padStart(2,'0')}</i><span>${escapeHtml(x)}</span></div>`).join('')}</div></div>`;openModal('#previewModal');}
+function showPreview(key){
+  const p=previewDefinitions[key];
+  if(!p)return;
+  $('#previewTitle').textContent=p.title;
+  $('#previewNote').textContent=t('exampleNote');
+  if(p.image){
+    $('#previewCanvas').innerHTML=`<div class="preview-image-wrap"><img class="preview-image" src="${p.image}" alt="${escapeHtml(p.title)} — үлгі" loading="eager"></div>`;
+  }else{
+    $('#previewCanvas').innerHTML=`<div class="sample ${p.kind}"><div class="sample-top"><span>${escapeHtml(p.tag)}</span><b>${MATERIAL_CONFIG[key].icon}</b></div><h4>${escapeHtml(p.headline)}</h4><div class="sample-blocks">${p.blocks.map((x,i)=>`<div class="sample-block"><i>${String(i+1).padStart(2,'0')}</i><span>${escapeHtml(x)}</span></div>`).join('')}</div></div>`;
+  }
+  openModal('#previewModal');
+}
 
 async function loadProfile(){
   if(!state.user){state.profile=null;state.canGenerate=false;updateAccessUI();renderSaved();return;}
