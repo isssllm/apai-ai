@@ -1,0 +1,206 @@
+<!doctype html>
+<html lang="kk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#0A84FF">
+<title>ApaI — Мұғалімдерге арналған ақылды көмекші</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+<div class="ambient ambient-one"></div><div class="ambient ambient-two"></div>
+
+<div class="splash" id="splash">
+  <div class="logo-animation"><span class="s-a">A</span><span class="s-pa">pa</span><span class="s-i">I</span></div>
+  <div class="splash-line"></div>
+</div>
+
+<header class="header">
+  <a class="brand" href="#home" aria-label="ApaI"><span class="brand-a">A</span><span>pa</span><span class="brand-i">I</span></a>
+  <nav class="desktop-nav">
+    <a href="#create" data-i18n="navCreate">Промпт жасау</a>
+    <a href="#saved" data-i18n="navSaved">Менің промпттарым</a>
+    <a href="#about" data-i18n="navAbout">Жоба туралы</a>
+    <a href="#help" data-i18n="navHelp">Көмек</a>
+  </nav>
+  <div class="header-actions">
+    <button class="account-btn" id="accountBtn" data-i18n="login">Кіру / Тіркелу</button>
+    <button class="language" id="languageBtn">ҚАЗ / РУС</button>
+    <button class="theme-btn" id="themeBtn" aria-label="Тақырып">☾</button>
+    <button class="menu-btn" id="menuBtn">☰</button>
+  </div>
+</header>
+
+<main>
+<section id="home" class="hero section">
+  <div class="hero-copy reveal">
+    <div class="eyebrow"><span class="pulse"></span><span data-i18n="eyebrow">Мұғалімдерге арналған жаңа буын құралы</span></div>
+    <h1 data-i18n="heroTitle">Сабаққа дайындықты<br><span>ақылдырақ</span> жасаңыз.</h1>
+    <p data-i18n="heroText">Сабақ, тест, викторина және көрнекі материалдарға арналған сапалы промпттарды бірнеше қадамда жасаңыз.</p>
+    <div class="hero-buttons">
+      <a href="#create" class="btn btn-primary" id="heroCreateBtn" data-i18n="start">Промпт жасау <span>↗</span></a>
+      <a href="#about" class="btn btn-secondary" data-i18n="learn">Толығырақ</a>
+    </div>
+    <div class="hero-note"><span>✓</span><span data-i18n="note">Тегін • Қарапайым • Қазақша және орысша</span></div>
+  </div>
+  <div class="hero-visual reveal delay">
+    <div class="orb"></div>
+    <div class="glass-demo">
+      <div class="demo-head"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="demo-label">ApaI Prompt Studio</span></div>
+      <div class="demo-body">
+        <span class="mini-label" data-i18n="preview">Промпт дайын</span>
+        <div class="demo-lines"><i></i><i></i><i class="short"></i></div>
+        <div class="demo-tags"><span>Математика</span><span>7 сынып</span><span>Тест</span></div>
+        <div class="demo-btn"><span data-i18n="copy">Көшіру</span> ⌘ C</div>
+      </div>
+    </div>
+    <div class="floating-badge">✦ <span data-i18n="quality">Сапалы шаблондар</span></div>
+  </div>
+</section>
+
+<section id="create" class="section create-section">
+  <div class="section-heading reveal">
+    <div class="section-kicker">01</div>
+    <h2 data-i18n="createTitle">Өзіңізге қажет промптты жасаңыз.</h2>
+    <p data-i18n="createText">Төмендегі қадамдарды толтырыңыз. ApaI сізге көшіріп, кез келген AI құралында қолдануға дайын промпт береді.</p>
+  </div>
+
+  <div class="stepper">
+    <div class="step active" data-step="1"><b>01</b><span data-i18n="stepMaterial">Материал</span></div>
+    <div class="step-line"></div>
+    <div class="step" data-step="2"><b>02</b><span data-i18n="stepLesson">Сабақ</span></div>
+    <div class="step-line"></div>
+    <div class="step" data-step="3"><b>03</b><span data-i18n="stepSettings">Баптаулар</span></div>
+    <div class="step-line"></div>
+    <div class="step" data-step="4"><b>04</b><span data-i18n="stepResult">Нәтиже</span></div>
+  </div>
+
+  <div class="generator">
+    <div class="panel form-panel">
+      <div class="form-step active" data-panel="1">
+        <div class="panel-title"><span>01</span><h3 data-i18n="materialTitle">Қандай материал керек?</h3></div>
+        <div class="choice-grid" id="materialChoices">
+          <button class="choice selected" data-value="Тест"><span class="icon">☑</span><strong data-i18n="test">Тест</strong><small data-i18n="testSub">Сұрақтар мен жауаптар</small></button>
+          <button class="choice" data-value="Презентация"><span class="icon">▣</span><strong data-i18n="presentation">Презентация</strong><small data-i18n="presentationSub">Слайдтарға арналған құрылым</small></button>
+          <button class="choice" data-value="Викторина"><span class="icon">✦</span><strong data-i18n="quiz">Викторина</strong><small data-i18n="quizSub">Қызықты тапсырмалар</small></button>
+          <button class="choice" data-value="Постер"><span class="icon">▤</span><strong data-i18n="poster">Постер / плакат</strong><small data-i18n="posterSub">Көрнекі материал</small></button>
+          <button class="choice" data-value="Инфографика"><span class="icon">◫</span><strong data-i18n="infographic">Инфографика</strong><small data-i18n="infographicSub">Деректерді визуалдау</small></button>
+          <button class="choice" data-value="Карточкалар"><span class="icon">▤</span><strong data-i18n="cards">Карточкалар</strong><small data-i18n="cardsSub">Жеке / жұптық жұмыс</small></button>
+          <button class="choice" data-value="Сабақ жоспары"><span class="icon">☷</span><strong data-i18n="lessonPlan">Сабақ жоспары</strong><small data-i18n="lessonPlanSub">Толық сабақ құрылымы</small></button>
+          <button class="choice" data-value="Баннер"><span class="icon">▰</span><strong data-i18n="banner">Баннер</strong><small data-i18n="bannerSub">Қысқа хабарлама</small></button>
+        </div>
+        <div class="step-actions"><button class="btn btn-primary next-btn" data-next="2" data-i18n="continue">Жалғастыру →</button></div>
+      </div>
+
+      <div class="form-step" data-panel="2">
+        <div class="panel-title"><span>02</span><h3 data-i18n="lessonTitle">Сабақ туралы</h3></div>
+        <div class="field-grid">
+          <label><span data-i18n="subject">Пән</span><select id="subject"><option>Математика</option><option>Қазақ тілі</option><option>Қазақ әдебиеті</option><option>Орыс тілі</option><option>Ағылшын тілі</option><option>Физика</option><option>Химия</option><option>Биология</option><option>Информатика</option><option>Тарих</option><option>География</option><option>Бастауыш сынып</option></select></label>
+          <label><span data-i18n="grade">Сынып</span><select id="grade"><option>1 сынып</option><option>2 сынып</option><option>3 сынып</option><option>4 сынып</option><option>5 сынып</option><option>6 сынып</option><option>7 сынып</option><option>8 сынып</option><option>9 сынып</option><option>10 сынып</option><option>11 сынып</option></select></label>
+          <label class="full"><span data-i18n="topic">Тақырып</span><input id="topic" placeholder="Мысалы: Квадрат теңдеулер"></label>
+        </div>
+        <div class="step-actions"><button class="btn btn-secondary back-btn" data-back="1" data-i18n="back">← Артқа</button><button class="btn btn-primary next-btn" data-next="3" data-i18n="continue">Жалғастыру →</button></div>
+      </div>
+
+      <div class="form-step" data-panel="3">
+        <div class="panel-title"><span>03</span><h3 data-i18n="settingsTitle">Баптаулар</h3></div>
+        <div class="field-grid">
+          <label><span data-i18n="difficulty">Күрделілік</span><select id="difficulty"><option>Жеңіл</option><option selected>Орташа</option><option>Күрделі</option></select></label>
+          <label><span data-i18n="promptLanguage">Промпт тілі</span><select id="promptLanguage"><option value="kk">Қазақша</option><option value="ru">Орысша</option></select></label>
+          <label><span data-i18n="quantity">Саны</span><select id="quantity"><option>5</option><option selected>10</option><option>15</option><option>20</option></select></label>
+          <label><span data-i18n="goal">Мақсат</span><select id="goal"><option>Білімді тексеру</option><option>Жаңа тақырыпты түсіндіру</option><option>Бекіту</option><option>Қайталау</option><option>Бағалау</option></select></label>
+          <label class="full"><span data-i18n="extra">Қосымша талаптар</span><textarea id="extra" rows="4" placeholder="Мысалы: деңгейлік тапсырмалар, дұрыс жауаптар соңында, заманауи мысалдар..."></textarea></label>
+        </div>
+        <div class="step-actions"><button class="btn btn-secondary back-btn" data-back="2" data-i18n="back">← Артқа</button><button class="btn btn-primary generate-btn" data-i18n="generate" type="button">Промпт жасау ✦</button>
+          <div class="access-note" id="accessNote"></div></div>
+      </div>
+
+      <div class="form-step" data-panel="4">
+        <div class="panel-title"><span>04</span><h3 data-i18n="resultTitle">Дайын!</h3></div>
+        <div class="result-box"><pre id="promptOutput"></pre></div>
+        <div class="result-actions">
+          <button class="btn btn-primary" id="copyBtn" data-i18n="copyPrompt">Промптты көшіру</button>
+          <button class="btn btn-secondary" id="saveBtn" data-i18n="savePrompt">Сақтау</button>
+          <button class="btn btn-secondary" id="newBtn" data-i18n="newPrompt">Жаңа промпт</button>
+        </div>
+        <div class="saved-state" id="savedState"></div>
+      </div>
+    </div>
+
+    <aside class="panel tips-panel">
+      <div class="tips-icon">✦</div>
+      <h4 data-i18n="tipsTitle">ApaI қалай жұмыс істейді?</h4>
+      <p data-i18n="tipsText">Дайын шаблондар сіздің таңдауларыңызды бір толық, нақты тапсырмаға айналдырады. ЖИ-ді сайтқа қоспай-ақ, дайын промптты кез келген сервиске жібере аласыз.</p>
+      <div class="tip-row"><b>01</b><span data-i18n="tip1">Материал түрін таңдаңыз.</span></div>
+      <div class="tip-row"><b>02</b><span data-i18n="tip2">Сынып пен тақырыпты жазыңыз.</span></div>
+      <div class="tip-row"><b>03</b><span data-i18n="tip3">Нәтижені көшіріп алыңыз.</span></div>
+    </aside>
+  </div>
+</section>
+
+<section id="saved" class="section saved-section">
+  <div class="section-heading reveal"><div class="section-kicker">02</div><h2 data-i18n="savedTitle">Менің промпттарым.</h2><p data-i18n="savedText">Осы браузерде сақталған промпттарыңызды қайта ашыңыз.</p></div>
+  <div id="savedList" class="saved-list"></div>
+</section>
+
+<section id="about" class="section info-section">
+  <div class="info-card reveal">
+    <div><div class="section-kicker">03</div><h2 data-i18n="aboutTitle">Мұғалім уақытын үнемдейтін қарапайым құрал.</h2></div>
+    <p data-i18n="aboutText">ApaI мұғалімге ЖИ-мен жұмыс істеуді оңай бастауға көмектеседі. Сіз параметрлерді таңдайсыз — сервис нақты әрі құрылымды промпт дайындайды.</p>
+  </div>
+</section>
+
+<section id="help" class="section help-section">
+  <div class="section-heading reveal"><div class="section-kicker">04</div><h2 data-i18n="helpTitle">Көмек</h2><p data-i18n="helpText">ApaI-де жасалған промптты ChatGPT, Gemini, Claude және басқа құралдарға көшіруге болады.</p></div>
+  <div class="faq">
+    <details><summary data-i18n="faq1Q">ApaI өзі жауап жасай ма?</summary><p data-i18n="faq1A">Жоқ. ApaI дайын сапалы промпт жасайды. Соңғы жауапты таңдаған AI сервисіңіз құрады.</p></details>
+    <details><summary data-i18n="faq2Q">Промпттар қайда сақталады?</summary><p data-i18n="faq2A">Бұл демо-нұсқада браузердің жергілікті қоймасында сақталады. Шынайы көпқолданушылы нұсқада Supabase Auth + Database қосуға дайын құрылым қарастырылған.</p></details>
+  </div>
+</section>
+</main>
+
+<div class="modal-backdrop" id="authModal" aria-hidden="true">
+  <div class="auth-modal" role="dialog" aria-modal="true" aria-labelledby="authTitle">
+    <button class="modal-close" id="authClose" aria-label="Close">×</button>
+    <div class="auth-kicker">ApaI</div>
+    <h3 id="authTitle" data-i18n="authLoginTitle">Аккаунтқа кіру</h3>
+    <p id="authDescription" class="auth-description" data-i18n="authLoginText">Промпт жасау үшін алдымен аккаунтқа кіріңіз немесе тіркеліңіз.</p>
+    <div class="auth-tabs">
+      <button class="auth-tab active" id="loginTab" data-i18n="loginTab">Кіру</button>
+      <button class="auth-tab" id="signupTab" data-i18n="signupTab">Тіркелу</button>
+    </div>
+    <form id="authForm" class="auth-form">
+      <label><span data-i18n="fullName">Аты-жөніңіз</span><input id="authName" type="text" autocomplete="name" placeholder="Мысалы: Әлихан Нұр" /></label>
+      <label><span>Email</span><input id="authEmail" type="email" required autocomplete="email" placeholder="name@example.com" /></label>
+      <label><span data-i18n="password">Құпиясөз</span><input id="authPassword" type="password" required minlength="6" autocomplete="current-password" placeholder="Кемінде 6 таңба" /></label>
+      <button class="btn btn-primary" type="submit" id="authSubmit" data-i18n="loginTab">Кіру</button>
+    </form>
+    <div class="auth-message" id="authMessage"></div>
+  </div>
+</div>
+
+<div class="modal-backdrop" id="accountModal" aria-hidden="true">
+  <div class="auth-modal account-modal" role="dialog" aria-modal="true" aria-labelledby="accountTitle">
+    <button class="modal-close" id="accountClose" aria-label="Close">×</button>
+    <div class="auth-kicker">ApaI</div>
+    <h3 id="accountTitle" data-i18n="accountTitle">Аккаунт</h3>
+    <div id="accountDetails" class="account-details"></div>
+    <div class="account-actions">
+      <button class="btn btn-secondary" id="logoutBtn" data-i18n="logout">Шығу</button>
+      <button class="btn btn-primary" id="adminPanelBtn" data-i18n="adminPanel" hidden>Админ панелі</button>
+    </div>
+    <div class="admin-panel" id="adminPanel" hidden>
+      <div class="admin-head"><strong data-i18n="adminUsers">Қолданушылар</strong><button class="btn btn-secondary" id="refreshUsers">↻</button></div>
+      <div id="userList" class="user-list"></div>
+    </div>
+  </div>
+</div>
+
+<footer class="footer"><span>© 2026 ApaI</span><span data-i18n="footerText">Мұғалімдерге арналған ақылды көмекші.</span></footer>
+
+<script src="app.js"></script>
+</body>
+</html>
