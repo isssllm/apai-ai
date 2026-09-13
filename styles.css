@@ -52,3 +52,9 @@ body.admin-page-open{overflow:hidden}.admin-page{position:fixed;inset:0;z-index:
 .dark .admin-page{background:#0d1118}.dark .admin-stats>div,.dark .admin-user-row{background:#151d2a;border-color:#2a3544}.dark .admin-toolbar input{background:#151d2a;color:#eef3fa;border-color:#344052}.dark .admin-table-head{color:#8592a4}.dark .admin-date{color:#a5b0bf}.dark .admin-access-time small{color:#8f9cad}.dark .admin-access-time b{color:#71d6a4}.dark .admin-access-time.expired b{color:#ff8b9b}
 @media(max-width:900px){.admin-table-head{display:none}.admin-user-row{grid-template-columns:1fr 1fr}.admin-user-main{grid-column:1/-1}.admin-row-actions{grid-column:1/-1}.admin-toolbar{grid-template-columns:1fr 1fr}.admin-toolbar input{grid-column:1/-1}.admin-stats{grid-template-columns:1fr 1fr}}
 @media(max-width:620px){.choice{min-height:132px}.preview-modal{padding:20px}.preview-canvas{padding:14px}.sample{padding:16px}.sample h4{font-size:20px}.sample.banner h4{font-size:27px}.admin-page{padding:20px 14px}.admin-page-head{flex-direction:column}.admin-head-actions{width:100%}.admin-head-actions .btn{flex:1}.admin-user-row{grid-template-columns:1fr}.admin-user-main,.admin-row-actions{grid-column:auto}.admin-toolbar{grid-template-columns:1fr}.admin-toolbar input{grid-column:auto}.admin-stats{grid-template-columns:1fr 1fr}}
+
+/* Password recovery */
+.auth-help{display:flex;justify-content:flex-end;align-items:center;margin-top:10px;min-height:24px}
+.auth-link{border:0;background:transparent;color:#0a84ff;padding:2px 0;font:inherit;font-size:11px;font-weight:800;cursor:pointer;text-decoration:none}
+.auth-link:hover{text-decoration:underline}
+.dark .auth-link{color:#7ebcff}

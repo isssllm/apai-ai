@@ -154,11 +154,16 @@
       <button class="auth-tab" id="signupTab" data-i18n="signupTab">Тіркелу</button>
     </div>
     <form id="authForm" class="auth-form">
-      <label><span data-i18n="fullName">Аты-жөніңіз</span><input id="authName" type="text" autocomplete="name" placeholder="Мысалы: Әлихан Нұр" /></label>
-      <label><span>Email</span><input id="authEmail" type="email" required autocomplete="email" placeholder="name@example.com" /></label>
-      <label><span data-i18n="password">Құпиясөз</span><input id="authPassword" type="password" required minlength="6" autocomplete="current-password" placeholder="Кемінде 6 таңба" /></label>
+      <label id="authNameLabel"><span data-i18n="fullName">Аты-жөніңіз</span><input id="authName" type="text" autocomplete="name" placeholder="Мысалы: Әлихан Нұр" /></label>
+      <label id="authEmailLabel"><span>Email</span><input id="authEmail" type="email" required autocomplete="email" placeholder="name@example.com" /></label>
+      <label id="authPasswordLabel"><span data-i18n="password">Құпиясөз</span><input id="authPassword" type="password" required minlength="6" autocomplete="current-password" placeholder="Кемінде 6 таңба" /></label>
+      <label id="authPasswordConfirmLabel" hidden><span id="authPasswordConfirmText">Құпиясөзді қайталаңыз</span><input id="authPasswordConfirm" type="password" minlength="6" autocomplete="new-password" placeholder="Құпиясөзді қайта енгізіңіз" /></label>
       <button class="btn btn-primary" type="submit" id="authSubmit" data-i18n="loginTab">Кіру</button>
     </form>
+    <div class="auth-help">
+      <button class="auth-link" type="button" id="forgotPasswordBtn">Құпиясөзді ұмыттыңыз ба?</button>
+      <button class="auth-link" type="button" id="backToLoginBtn" hidden>← Кіруге оралу</button>
+    </div>
     <div class="auth-message" id="authMessage"></div>
   </div>
 </div>
